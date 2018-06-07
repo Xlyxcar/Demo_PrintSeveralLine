@@ -1,4 +1,4 @@
-package wuliao.main;
+package print_several_line;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;

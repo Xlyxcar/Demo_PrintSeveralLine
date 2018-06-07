@@ -1,4 +1,4 @@
-package wuliao.main;
+package print_several_line;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,7 +190,7 @@ public class PrintSeveralLine implements PrintSeveralLine_Component{
 		inputPanel = new JPanel(); // 输入面板
 
 		textPanel = new JScrollPane(); // 滚动面板
-		textArea = new JTextArea(15, 42); // 文本区
+		textArea = new JTextArea(15, 48); // 文本区
 		
 		con = new GridBagConstraints(); // 布局管理器
 		
