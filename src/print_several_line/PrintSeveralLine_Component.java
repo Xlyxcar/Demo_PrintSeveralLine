@@ -16,5 +16,7 @@ public interface PrintSeveralLine_Component {
 	JButton addFormula = new JButton("添加公式");
 	
 	JButton setOut = new JButton("生成");
+	
+	JButton clean = new JButton("清空");
 
 }

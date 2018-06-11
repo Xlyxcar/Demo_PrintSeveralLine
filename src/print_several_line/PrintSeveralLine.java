@@ -58,7 +58,7 @@ public class PrintSeveralLine implements PrintSeveralLine_Component{
 	private void add(JComponent panel, JComponent component, int x, int y){
 		add(panel, component, x, y, 1, 1);
 	}
-	
+	 
 	/**
 	 * 在面板中添加组件的方法
 	 * @param panel 面板
@@ -87,6 +87,7 @@ public class PrintSeveralLine implements PrintSeveralLine_Component{
 			text.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 			add(inputPanel, texts.get(texts.size()-1), 0, line++);
 			frame.pack();
+			return;
 		});
 		
 		addFormula.addActionListener((ActionEvent e) ->
@@ -95,10 +96,12 @@ public class PrintSeveralLine implements PrintSeveralLine_Component{
 			formula.setBackground(new Color(25, 25, 25));
 			formula.setFont(new Font("consolas", Font.PLAIN, 14));
 			formula.setForeground(new Color(190, 238, 28));
+			formula.setText("i");
 			texts.add(null);
 			texts.add(formula);
 			add(inputPanel, formula, 0, line++);
 			frame.pack();
+			return;
 		});
 		
 		setOut.addActionListener((ActionEvent e) ->
@@ -111,34 +114,43 @@ public class PrintSeveralLine implements PrintSeveralLine_Component{
 			temp = startNumInput.getText();
 			Integer initNum = Integer.valueOf(("".equals(temp))?"0":temp); //获取起始数(默认为0)
 
-			for(int i=0; i<countNum; i++)
+			try 
 			{
-				StringBuilder str = new StringBuilder();
-				for(int j=0; j<texts.size(); j++)
+				for(int i=0; i<countNum; i++)
 				{
-					JTextField tField = texts.get(j); // 获取输入框
-					if(tField == null){ // 输入框为null(公式标记)
-						try {
+					StringBuilder str = new StringBuilder();
+					for(int j=0; j<texts.size(); j++)
+					{
+						JTextField tField = texts.get(j); // 获取输入框
+						if(tField == null){ // 输入框为null(公式标记)
 							String mula = texts.get(++j).getText(); // 获取公式字符串
-							
+
 							engine.put("i", initNum);
 							// 计算公式
 							String result = engine.eval(mula).toString();
-//							BigDecimal res = new BigDecimal(re);
-//							String result = res.toString();
-	                        str.append(result.endsWith(".0")?result.substring(0, result.indexOf('.')):result); // 计算结果放入字符串
-	                        continue;
-                        } catch (Exception e1){
-                        	e1.printStackTrace();
-                        }
-					}else{ // 输入框为文本
-						str.append(tField.getText()); // 将文本放入字符串
+							str.append(result.endsWith(".0")?result.substring(0, result.indexOf('.')):result); // 计算结果放入字符串
+						}else{ // 输入框为文本
+							str.append(tField.getText()); // 将文本放入字符串
+						}
 					}
+					// 添加字符串并换行
+					textArea.append(str.toString());
+					textArea.append("\n");
+					initNum++;
 				}
-				// 添加字符串并换行
-				textArea.append(str.toString());
-				textArea.append("\n");
-				initNum++;
+			} catch (Exception e1)
+			{
+				e1.printStackTrace();
+			}finally{
+				System.gc();
+			}
+		});
+		clean.addActionListener((ActionEvent e) ->
+		{
+			textArea.setText("");
+			for(JTextField t: texts){
+				if(t != null)
+					t.setText("");
 			}
 		});
     }
@@ -152,6 +164,7 @@ public class PrintSeveralLine implements PrintSeveralLine_Component{
 		functionPanel.add(addString);
 		functionPanel.add(addFormula);
 		functionPanel.add(setOut);
+		functionPanel.add(clean);
     }
 	
 	
